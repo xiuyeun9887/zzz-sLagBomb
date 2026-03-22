@@ -3,7 +3,7 @@ local player = game.Players.LocalPlayer
 local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
 gui.Name = "LagBombUI"
 
--- Main Frame (SMALL)
+-- Main Frame
 local frame = Instance.new("Frame", gui)
 frame.Size = UDim2.new(0, 160, 0, 130)
 frame.Position = UDim2.new(0.5, -80, 0.5, -65)
@@ -11,6 +11,10 @@ frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
+
+-- Rounded edges
+local corner = Instance.new("UICorner", frame)
+corner.CornerRadius = UDim.new(0, 10)
 
 -- Title
 local title = Instance.new("TextLabel", frame)
@@ -21,12 +25,14 @@ title.TextColor3 = Color3.new(1,1,1)
 title.Font = Enum.Font.SourceSansBold
 title.TextSize = 12
 
+local titleCorner = Instance.new("UICorner", title)
+titleCorner.CornerRadius = UDim.new(0, 10)
+
 -- Ping
 local ping = Instance.new("TextLabel", frame)
 ping.Position = UDim2.new(0, 6, 0, 25)
 ping.Size = UDim2.new(1, -12, 0, 15)
 ping.BackgroundTransparency = 1
-ping.Text = "Ping: 52 ms"
 ping.TextColor3 = Color3.fromRGB(200,200,200)
 ping.TextSize = 11
 ping.TextXAlignment = Enum.TextXAlignment.Left
@@ -36,7 +42,6 @@ local fps = Instance.new("TextLabel", frame)
 fps.Position = UDim2.new(0, 6, 0, 40)
 fps.Size = UDim2.new(1, -12, 0, 15)
 fps.BackgroundTransparency = 1
-fps.Text = "FPS: 69"
 fps.TextColor3 = Color3.fromRGB(200,200,200)
 fps.TextSize = 11
 fps.TextXAlignment = Enum.TextXAlignment.Left
@@ -52,10 +57,14 @@ local function createButton(text, color, yPos)
 	btn.Font = Enum.Font.SourceSansBold
 	btn.TextSize = 11
 	btn.BorderSizePixel = 0
+	
+	local c = Instance.new("UICorner", btn)
+	c.CornerRadius = UDim.new(0, 8)
+	
 	return btn
 end
 
--- Buttons (SMALL)
+-- Buttons
 local lagBtn = createButton("lag em", Color3.fromRGB(70,130,180), 60)
 local resetBtn = createButton("Reset", Color3.fromRGB(200,50,50), 85)
 local speedBtn = createButton("Speed [E]", Color3.fromRGB(150,80,80), 110)
@@ -72,6 +81,22 @@ resetBtn.MouseButton1Click:Connect(function()
 	enabled = false
 	lagBtn.Text = "lag em"
 end)
+
+-- Fake Dynamic Ping & FPS
+task.spawn(function()
+	while true do
+		-- fake ping (30 - 120 ms)
+		local fakePing = math.random(30,120)
+		ping.Text = "Ping: "..fakePing.." ms"
+		
+		-- fake fps (40 - 75)
+		local fakeFPS = math.random(40,75)
+		fps.Text = "FPS: "..fakeFPS
+		
+		task.wait(1)
+	end
+end)
+
 -- Keybind
 game:GetService("UserInputService").InputBegan:Connect(function(input, gp)
 	if gp then return end
